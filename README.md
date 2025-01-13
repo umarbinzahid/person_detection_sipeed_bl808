@@ -1,6 +1,9 @@
-
 # Person Detection on M1s Dock using Sipeed SDK
-This example utilizes the BL808 C906 (D0) core to implement the TensorFlow person detection example using Sipeed SDK. There are two projects: one is vectorized, and the other is non-vectorized. In the vectorized example, only the integer convolution function (tensorflow/lite/kernels/internal/refrence/integer_ops/conv.h) is vectorized, offering approximately 4 to 5 times the performance boost.
+This example utilizes the C906 (D0) core on m1s dock to implement the TensorFlow person detection example using Sipeed SDK. An image taken from the m1s dock camera is resized to 80x80 resolution, converted to grayscale, and then passed to the model. The model performs its computations and outputs the scores for whether a person is detected or not.
+
+There are two projects: one is vectorized, and the other is non-vectorized. 
+
+In the vectorized example, depthwise convolution function `tensorflow/lite/kernels/internal/refrence/integer_ops/conv.h` is vectorized using RISC-V vector instructions, offering approximately 4 to 5 times the performance boost in computations."
 
 ## Getting Started
 

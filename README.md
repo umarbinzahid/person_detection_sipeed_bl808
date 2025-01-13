@@ -1,14 +1,6 @@
 
-## Ubuntu 24.04
-sudo ln -s /usr/lib/x86_64-linux-gnu/libncursesw.so.6.4 /usr/lib/x86_64-linux-gnu/libncursesw.so.5
-sudo ln -s /usr/lib/x86_64-linux-gnu/libncurses.so.6.4 /usr/lib/x86_64-linux-gnu/libncurses.so.5
-
-## Functions
--> tensorflow/lite/kernels/internal/refrence/conv.h
--> tensorflow/lite/kernels/internal/refrence/integer_ops/conv.h
-
-# Person Detection example of TensorFlow Lite (Lite-RT) running on M1s Dock using Sipeed SDK
-This example utilizes BL808 C906 (D0) core to implement the tensor flow person detection example.
+# Person Detection on M1s Dock using Sipeed SDK
+This example utilizes the BL808 C906 (D0) core to implement the TensorFlow person detection example using Sipeed SDK. There are two projects: one is vectorized, and the other is non-vectorized. In the vectorized example, only the integer convolution function (tensorflow/lite/kernels/internal/refrence/integer_ops/conv.h) is vectorized, offering approximately 4 to 5 times the performance boost.
 
 ## Getting Started
 
@@ -114,6 +106,14 @@ See flashing details on [Sipeed WiKi](https://wiki.sipeed.com/hardware/en/maix/m
 
 ### Debugging
 First follow the setups to install t-head debug server from [Sipeed WiKi](https://wiki.sipeed.com/hardware/en/maix/m1s/other/start.html#Use-Jtag)
+
+Prerequisites for Ubuntu 24.04 or higher:
+```
+sudo ln -s /usr/lib/x86_64-linux-gnu/libncursesw.so.6.4 /usr/lib/x86_64-linux-gnu/libncursesw.so.5
+```
+```
+sudo ln -s /usr/lib/x86_64-linux-gnu/libncurses.so.6.4 /usr/lib/x86_64-linux-gnu/libncurses.so.5
+```
 
 1. Flash the binary file of the code you want to debug.
 2. Open the UART interface in putty or minicom `minicom -D /dev/ttyUSB1 -b 2000000` for M0 core (Serial Port with big number).

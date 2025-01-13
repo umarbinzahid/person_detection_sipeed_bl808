@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Vectorized Person Detection",
+            "type": "shell",
+            "command": "${workspaceFolder}/build.sh",
+            "args": [
+                "person_detection_rvv"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build Non-Vectorized Person Detection",
+            "type": "shell",
+            "command": "${workspaceFolder}/build.sh",
+            "args": [
+                "person_detection_non_rvv"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+    ]
+}

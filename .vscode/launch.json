@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug RISC-V",
+            "type": "cppdbg",
+            "request": "launch",
+            "targetArchitecture": "arm",
+            "program": "${workspaceFolder}/build_out/person_detection_rvv.elf",
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": false
+                },
+                {
+                    "description": "GDB Init",
+                    "text": "source ${workspaceFolder}/bl808.init",
+                    "ignoreFailures": false
+                },
+            ],
+            "miDebuggerPath": "${env:BL_SDK_PATH}/toolchain/Linux_x86_64/bin/riscv64-unknown-elf-gdb", // Path to your GDB
+            "miDebuggerServerAddress": "127.0.0.1:1025", // GDB server address
+            "serverLaunchTimeout": 10000,
+            "stopAtEntry": false,
+        }
+    ]
+}

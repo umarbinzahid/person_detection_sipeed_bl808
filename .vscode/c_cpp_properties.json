@@ -3,7 +3,8 @@
         {
             "name": "RISC-V",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${env:BL_SDK_PATH}/**"
             ],
             "defines": [],
             "compilerPath": "${env:RISCV_TOOLCHAIN}/riscv64-unknown-elf-gcc",

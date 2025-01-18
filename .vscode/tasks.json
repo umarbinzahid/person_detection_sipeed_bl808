@@ -2,28 +2,38 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build Vectorized Person Detection",
+            "label": "compile",
             "type": "shell",
-            "command": "${workspaceFolder}/build.sh",
+            "command": "make",
             "args": [
-                "person_detection_rvv"
+                "CONFIG_CHIP_NAME=BL808",
+                "CPU_ID=D0",
+                "-j$(nproc)",
+                "PROJECT_NAME=${input:projectName}"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
         },
         {
-            "label": "Build Non-Vectorized Person Detection",
+            "label": "Build",
             "type": "shell",
-            "command": "${workspaceFolder}/build.sh",
+            "command": "cp",
             "args": [
-                "person_detection_non_rvv"
+                "build_out/${input:projectName}.bin",
+                "build_out/d0fw.bin"
             ],
+            "dependsOn":["compile"],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
         },
+    ],
+    "inputs": [
+        {
+            "id": "projectName",
+            "type": "pickString",
+            "description": "Select the project to build.",
+            "options": ["person_detection_rvv", "person_detection_non_rvv"],
+            "default": "person_detection_rvv"
+        }
     ]
 }

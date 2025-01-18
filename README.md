@@ -3,7 +3,7 @@ This example utilizes the C906 (D0) core on m1s dock to implement the TensorFlow
 
 There are two projects: one is vectorized, and the other is non-vectorized. 
 
-In the vectorized example, depthwise convolution function `tensorflow/lite/kernels/internal/refrence/integer_ops/conv.h` is vectorized using RISC-V vector instructions, offering approximately 4 to 5 times the performance boost in computations."
+In the vectorized example, depthwise convolution function `tensorflow/lite/kernels/internal/refrence/integer_ops/conv.h` is vectorized using RISC-V vector instructions, offering approximately 4 to 5 times the performance boost in computations.
 
 ## Getting Started
 
@@ -58,14 +58,14 @@ In the vectorized example, depthwise convolution function `tensorflow/lite/kerne
     EOF
     ```
     ```bash
-    $ source ~/.bashrc
+    source ~/.bashrc
     ```
 6. Update the toolchain to fix POSIX error definitions for TFLite. Open the file `error_constants.h` in a text editor located at the paths below: (Both files should be updated)
     ```
-    ~/apps/sipeed/M1s_BL808_SDK/toolchain/Linux_x86_64//riscv64-unknown-elf/include/c++/10.2.0/riscv64-unknown-elf/rv64imafdcv_zfh_zvamo_zvlsseg_xtheadc/lp64d/bits/error_constants.h
+    ~/apps/sipeed/M1s_BL808_SDK/toolchain/Linux_x86_64/riscv64-unknown-elf/include/c++/10.2.0/riscv64-unknown-elf/rv64imafdcv_zfh_zvamo_zvlsseg_xtheadc/lp64d/bits/error_constants.h
     ```
     ```
-    ~/apps/sipeed/M1s_BL808_SDK/toolchain/Linux_x86_64//riscv64-unknown-elf/include/c++/10.2.0/riscv64-unknown-elf/rv64imafdc_v0p7_zfh_zvamo0p7_zvlsseg0p7_xtheadc/lp64d/bits/error_constants.h
+    ~/apps/sipeed/M1s_BL808_SDK/toolchain/Linux_x86_64/riscv64-unknown-elf/include/c++/10.2.0/riscv64-unknown-elf/rv64imafdc_v0p7_zfh_zvamo0p7_zvlsseg0p7_xtheadc/lp64d/bits/error_constants.h
     ```
     
     Uncomment the `#include <cerrno>` and add the `#include <sys/errno.h>` in next line.
@@ -93,9 +93,9 @@ In the vectorized example, depthwise convolution function `tensorflow/lite/kerne
     ```
 
 ### Compiling
-Open the downloaded "person_detection_m1sdock" folder in vs-code. Press `Ctrl+Shift+B` and it will a prompt to build tasks "Build Non-Vectorized Person Detection" and "Build Vectorized Person Detection". Select the required projetc to compile and it should start building it.
+Open the downloaded "person_detection_m1sdock" folder in vs-code. Press `Ctrl+Shift+B` and it will a prompt to build tasks "person_detection_non_rvv" and "person_detection_rvv". Select the required project to compile and it should start building it.
 
-Alternatively, you can open terminal in root of repository and execute `bash build.sh {folder name}` where `{folder name}` can be "person_detection_non_rvv" and "person_detection_rvv" and this should start compiling the example. If everything is followed then it will compile successfully.
+Alternatively, you can open terminal in root of repository and execute `./build.sh {folder name}` where `{folder name}` can be "person_detection_non_rvv" and "person_detection_rvv" and this should start compiling the example. If everything is followed then it will compile successfully. (execute `chmod +x build.sh` command, if "permission denined" error occurs. It is one time operation only)
 
 ### Flashing
 When compilation is done. The ouput binary file will be generated in `build_out` folder in root of repository folder.

@@ -1,23 +1,22 @@
-/* Copyright 2022 The TensorFlow Authors. All Rights Reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-==============================================================================*/
+/** 
+ * Copyright 2024 All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ **/
 
 #include <stdio.h>
 
 #include "main_functions.h"
-
-#include "detection_responder.h"
 #include "image_provider.h"
 #include "model_settings.h"
 #include "person_detect_model_data.h"
@@ -47,7 +46,15 @@ __attribute__((aligned(16))) static uint8_t tensor_arena[kTensorArenaSize];
 }  // namespace
 
 // The name of this function is important for Arduino compatibility.
-void setup()
+
+/**
+ * Initializes all data needed for the person detection example.
+ * 
+ * @param none
+ * 
+ * @return none
+ */
+void init_model(void)
 {
     tflite::InitializeTarget();
     // Set up logging. Google style is to avoid globals or statics because of
@@ -94,9 +101,22 @@ void setup()
     input = interpreter->input(0);
 }
 
-// The name of this function is important for Arduino compatibility.
-void loop()
+/**
+ * Run one iteration of inference on single frame taken from camera feed. 
+ * This should be called repeatedly from the application code.
+ * 
+ * @param person_score Pointer to store person scrore.
+ * @param no_person_score Pointer to store no person scrore.
+ * 
+ * @return 0 if successfull and else -1.
+ */
+int8_t run_model(int8_t* person_score, int8_t* no_person_score)
 {
+    if ( (person_score == NULL) || (no_person_score == NULL) )
+    {
+        printf("Invalid Arguments\r\n");
+        return -1;
+    }
     // Get image from provider.
     if (kTfLiteOk != GetImage(kNumCols, kNumRows, kNumChannels, input->data.int8)) {
         MicroPrintf("Image capture failed.");
@@ -110,7 +130,47 @@ void loop()
     TfLiteTensor* output = interpreter->output(0);
 
     // Process the inference results.
-    int8_t person_score = output->data.uint8[kPersonIndex];
-    int8_t no_person_score = output->data.uint8[kNotAPersonIndex];
-    RespondToDetection(person_score, no_person_score);
+    *person_score = output->data.uint8[kPersonIndex];
+    *no_person_score = output->data.uint8[kNotAPersonIndex];
+
+    return 0;
+}
+
+/**
+ * Run model on image.
+ * 
+ * @param test_image Pointer to test image.
+ * @param person_score Pointer to store person scrore.
+ * @param no_person_score Pointer to store no person scrore.
+ * 
+ * @return 0 if successfull, -1 for invalid arguments and -2 for invalid image.
+ */
+int8_t image_tester(const uint8_t* test_image, int8_t* person_score, int8_t* no_person_score)
+{
+    if ( (person_score == NULL) || (no_person_score == NULL) )
+    {
+        printf("Invalid Arguments\r\n");
+        return -1;
+    }
+
+    if (strlen((const char*) test_image) <= 0)
+    {
+        printf("Invalid Test Image\r\n");
+        return -2;
+    }
+    // get test image
+    memcpy(input->data.int8, test_image, kNumCols * kNumRows * kNumChannels);
+    // Run the model on this input and make sure it succeeds.
+    if (kTfLiteOk != interpreter->Invoke())
+    {
+        printf("Invoke failed.\r\n");
+    }
+
+    TfLiteTensor *output = interpreter->output(0);
+
+    // Process the inference results.
+    *person_score = output->data.uint8[kPersonIndex];
+    *no_person_score = output->data.uint8[kNotAPersonIndex];
+
+    return 0;
 }

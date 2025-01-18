@@ -28,8 +28,6 @@
 #include <lcd.h>
 /* Test Images */
 #include "test_image_data.h"
-#include "no_person_image_data.h"
-#include "person_image_data.h"
 
 // Camera
 #define CAMERA_W (400)
@@ -134,8 +132,7 @@ int main()
         printf("Time in millisecond before acquirng frame: %d\r\n", start_time);
 
         // update test image data in "test_image_data.cc"
-        //image_tester(g_test_image_data, person_score, no_person_score);
-        if ( image_tester(g_no_person_image_data, &person_score, &no_person_score) != 0)
+        if ( image_tester(g_test_image_data, person_score, no_person_score); != 0)
         {
             bl_cam_mipi_yuv_deinit();
             return 0;

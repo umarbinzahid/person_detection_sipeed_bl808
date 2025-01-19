@@ -60,7 +60,7 @@ int main()
 
     // init lcd
     if (lcd_init() == 0) {
-        lcd_clear(BLACK_COLOR); // clear lcd with all black
+        lcd_clear(WHITE_COLOR); // clear lcd with all black
         lcd_set_dir(1, 0); // set direction
     } else {
         printf("LCD init failed\r\n");
@@ -132,7 +132,7 @@ int main()
         printf("Time in millisecond before acquirng frame: %d\r\n", start_time);
 
         // update test image data in "test_image_data.cc"
-        if ( image_tester(g_test_image_data, person_score, no_person_score); != 0)
+        if ( image_tester(g_test_image_data, &person_score, &no_person_score) != 0)
         {
             bl_cam_mipi_yuv_deinit();
             return 0;
@@ -147,12 +147,12 @@ int main()
         printf("<===\r\n");
 
         // write on lcd
-        lcd_clear(BLACK_COLOR); // clear lcd with all black
+        lcd_clear(WHITE_COLOR); // clear lcd with all black
         memset(lcd_buff, 0, sizeof(lcd_buff));
         sprintf ( (char*) lcd_buff, 
                 "Person Score: %d\r\nNo Person Score: %d\r\nTime Taken: %d", 
                 person_score, no_person_score, (end_time - start_time));
-        lcd_draw_str_ascii16(X_OFFSET, Y_OFFSET, (lcd_color_t) WHITE_COLOR, (lcd_color_t) BLACK_COLOR, lcd_buff, 128);
+        lcd_draw_str_ascii16(X_OFFSET, Y_OFFSET, (lcd_color_t) BLACK_COLOR, (lcd_color_t) WHITE_COLOR, lcd_buff, 128);
 
 #endif /* RUN_MODEL_ON_TEST_IMAGES */
 

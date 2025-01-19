@@ -5,4 +5,4 @@ Execution command: `python script.py input.jpg output.c`
 
 Pre-requisites: `pip install numpy pillow` 
 
-*Test Pictures are taken from Microsoft Coco Datset. Script is generted from ChatGPT.*
+*Test Pictures are taken from Microsoft Coco Datset. Script is generated from ChatGPT.*
